@@ -65,6 +65,82 @@ body {
     margin-bottom: 20px;
 }
 
+/* About Section */
+.about-section {
+    padding: 80px 0;
+    background-color: white;
+}
+
+.about-content {
+    padding: 30px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.about-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.about-values {
+    padding: 30px;
+}
+
+.value-card {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-color);
+    background: var(--light-bg);
+    border-radius: 0 10px 10px 0;
+    transition: transform 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateX(5px);
+}
+
+.value-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.value-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.team-card {
+    text-align: center;
+    padding: 30px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.team-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.team-card .position {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
 /* Contact Section */
 .contact-section {
     padding: 80px 0;
@@ -133,7 +209,14 @@ body {
         padding: 100px 0 60px;
     }
     
-    .service-card {
+    .service-card,
+    .team-card,
+    .value-card {
         margin-bottom: 30px;
+    }
+
+    .about-content,
+    .about-values {
+        padding: 20px;
     }
 }
