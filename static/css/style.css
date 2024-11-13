@@ -35,6 +35,10 @@ body.dark-mode .value-card {
     color: #fff;
 }
 
+body.dark-mode .contact-section {
+    background-color: #000;
+}
+
 body.dark-mode .contact-form {
     background: rgba(255, 255, 255, 0.05);
 }
@@ -215,8 +219,8 @@ body.dark-mode .footer .social-icons a:hover {
 /* Contact Section */
 .contact-section {
     padding: 80px 0;
-    background-color: var(--light-bg);
-    transition: background-color 0.5s ease;
+    background-color: transparent;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .contact-form {
