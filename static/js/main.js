@@ -13,16 +13,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Navbar background change on scroll
+    // Dynamic background color change on scroll
+    let lastScrollTop = 0;
+    const darkModeThreshold = 300; // Scroll threshold for dark mode
+
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Navbar background change
+        if (currentScroll > 50) {
+            navbar.style.background = currentScroll > darkModeThreshold ? 
+                'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)';
             navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
         } else {
             navbar.style.background = 'rgba(255, 255, 255, 0.95)';
             navbar.style.boxShadow = 'none';
         }
+
+        // Body background color change
+        if (currentScroll > darkModeThreshold) {
+            document.body.classList.add('dark-mode');
+            // Adjust navbar links color for dark mode
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.style.color = '#fff';
+            });
+        } else {
+            document.body.classList.remove('dark-mode');
+            // Reset navbar links color
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.style.color = '';
+            });
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
     });
 
     // Contact form submission

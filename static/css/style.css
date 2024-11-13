@@ -11,6 +11,41 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-color);
     overflow-x: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body.dark-mode {
+    background-color: #000;
+    color: #fff;
+}
+
+body.dark-mode .section-title,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p {
+    color: #fff;
+}
+
+body.dark-mode .service-card,
+body.dark-mode .team-card,
+body.dark-mode .about-content,
+body.dark-mode .value-card {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+body.dark-mode .contact-form {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /* Navigation */
@@ -32,18 +67,21 @@ body {
 .hero-section {
     padding: 120px 0 80px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transition: background 0.5s ease;
 }
 
 .hero-section h1 {
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: var(--primary-color);
+    transition: color 0.5s ease;
 }
 
 /* Services Section */
 .services-section {
     padding: 80px 0;
-    background-color: white;
+    background-color: transparent;
+    transition: background-color 0.5s ease;
 }
 
 .service-card {
@@ -51,8 +89,9 @@ body {
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.5s ease, color 0.5s ease;
     margin-bottom: 30px;
+    background-color: white;
 }
 
 .service-card:hover {
@@ -63,12 +102,14 @@ body {
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 20px;
+    transition: color 0.5s ease;
 }
 
 /* About Section */
 .about-section {
     padding: 80px 0;
-    background-color: white;
+    background-color: transparent;
+    transition: background-color 0.5s ease;
 }
 
 .about-content {
@@ -76,11 +117,13 @@ body {
     background: var(--light-bg);
     border-radius: 10px;
     margin-bottom: 30px;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .about-content h3 {
     color: var(--primary-color);
     margin-bottom: 20px;
+    transition: color 0.5s ease;
 }
 
 .about-values {
@@ -93,7 +136,7 @@ body {
     border-left: 4px solid var(--primary-color);
     background: var(--light-bg);
     border-radius: 0 10px 10px 0;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.5s ease, color 0.5s ease;
 }
 
 .value-card:hover {
@@ -104,11 +147,13 @@ body {
     font-size: 2rem;
     color: var(--primary-color);
     margin-bottom: 15px;
+    transition: color 0.5s ease;
 }
 
 .value-card h4 {
     color: var(--secondary-color);
     margin-bottom: 10px;
+    transition: color 0.5s ease;
 }
 
 .team-card {
@@ -117,7 +162,7 @@ body {
     background: var(--light-bg);
     border-radius: 10px;
     margin-bottom: 30px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.5s ease, color 0.5s ease;
 }
 
 .team-card:hover {
@@ -128,23 +173,27 @@ body {
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 20px;
+    transition: color 0.5s ease;
 }
 
 .team-card h4 {
     color: var(--secondary-color);
     margin-bottom: 10px;
+    transition: color 0.5s ease;
 }
 
 .team-card .position {
     color: var(--primary-color);
     font-weight: 600;
     margin-bottom: 15px;
+    transition: color 0.5s ease;
 }
 
 /* Contact Section */
 .contact-section {
     padding: 80px 0;
     background-color: var(--light-bg);
+    transition: background-color 0.5s ease;
 }
 
 .contact-form {
@@ -152,27 +201,14 @@ body {
     background: white;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.5s ease;
 }
 
 .form-control {
     border: 2px solid #e9ecef;
     padding: 12px;
     margin-bottom: 20px;
-}
-
-.whatsapp-btn {
-    display: inline-block;
-    background-color: #25D366;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.whatsapp-btn:hover {
-    background-color: #128C7E;
-    color: white;
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
 /* Footer */
