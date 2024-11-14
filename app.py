@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
+import locale
 
 class Base(DeclarativeBase):
     pass
@@ -17,56 +18,80 @@ db.init_app(app)
 
 from models import Contact, Blog
 
+# Spanish month names
+SPANISH_MONTHS = {
+    'January': 'Enero',
+    'February': 'Febrero',
+    'March': 'Marzo',
+    'April': 'Abril',
+    'May': 'Mayo',
+    'June': 'Junio',
+    'July': 'Julio',
+    'August': 'Agosto',
+    'September': 'Septiembre',
+    'October': 'Octubre',
+    'November': 'Noviembre',
+    'December': 'Diciembre'
+}
+
+@app.template_filter('spanish_date')
+def spanish_date_filter(date):
+    eng_date = date.strftime('%d de %B, %Y')
+    for eng, esp in SPANISH_MONTHS.items():
+        if eng in eng_date:
+            return eng_date.replace(eng, esp)
+    return eng_date
+
 def init_sample_blog_posts():
     # Check if we already have blog posts
     if Blog.query.count() == 0:
         sample_posts = [
             {
-                'title': 'The Future of AI in Business',
-                'content': '''<p>Artificial Intelligence is revolutionizing the way businesses operate. From automated customer service to predictive analytics, AI is becoming an integral part of modern business operations.</p>
+                'title': 'El Futuro de la IA en los Negocios',
+                'content': '''<p>La Inteligencia Artificial está revolucionando la forma en que operan las empresas. Desde la atención al cliente automatizada hasta el análisis predictivo, la IA se está convirtiendo en una parte integral de las operaciones comerciales modernas.</p>
 
-<p>Key areas where AI is making an impact:</p>
+<p>Áreas clave donde la IA está generando impacto:</p>
 <ul>
-<li>Customer Service Automation</li>
-<li>Predictive Analytics</li>
-<li>Process Optimization</li>
-<li>Decision Making Support</li>
+<li>Automatización de Servicio al Cliente</li>
+<li>Análisis Predictivo</li>
+<li>Optimización de Procesos</li>
+<li>Soporte en Toma de Decisiones</li>
 </ul>
 
-<p>As we look to the future, the integration of AI in business processes will only deepen, creating more efficient and intelligent organizations.</p>''',
-                'summary': 'Explore how AI is transforming modern business operations and what the future holds.',
-                'author': 'Dr. Sarah Chen'
+<p>Mirando hacia el futuro, la integración de la IA en los procesos empresariales solo se profundizará, creando organizaciones más eficientes e inteligentes.</p>''',
+                'summary': 'Explora cómo la IA está transformando las operaciones comerciales modernas y qué nos depara el futuro.',
+                'author': 'Dra. Sarah Chen'
             },
             {
-                'title': 'Machine Learning: A Practical Guide',
-                'content': '''<p>Machine Learning has emerged as a crucial technology in the modern digital landscape. This guide explores practical applications and implementation strategies.</p>
+                'title': 'Machine Learning: Una Guía Práctica',
+                'content': '''<p>El Machine Learning ha emergido como una tecnología crucial en el panorama digital moderno. Esta guía explora aplicaciones prácticas y estrategias de implementación.</p>
 
-<p>Essential components of ML implementation:</p>
+<p>Componentes esenciales de la implementación de ML:</p>
 <ul>
-<li>Data Collection and Preparation</li>
-<li>Model Selection</li>
-<li>Training and Validation</li>
-<li>Deployment and Monitoring</li>
+<li>Recolección y Preparación de Datos</li>
+<li>Selección de Modelos</li>
+<li>Entrenamiento y Validación</li>
+<li>Despliegue y Monitoreo</li>
 </ul>
 
-<p>Understanding these fundamentals is key to successful ML implementation in any organization.</p>''',
-                'summary': 'A comprehensive guide to implementing machine learning in your organization.',
+<p>Comprender estos fundamentos es clave para una implementación exitosa de ML en cualquier organización.</p>''',
+                'summary': 'Una guía completa para implementar machine learning en tu organización.',
                 'author': 'Michael Rodriguez'
             },
             {
-                'title': 'Ethics in AI Development',
-                'content': '''<p>As AI becomes more prevalent in our daily lives, ethical considerations in AI development are more important than ever.</p>
+                'title': 'Ética en el Desarrollo de IA',
+                'content': '''<p>A medida que la IA se vuelve más presente en nuestra vida diaria, las consideraciones éticas en su desarrollo son más importantes que nunca.</p>
 
-<p>Key ethical considerations:</p>
+<p>Consideraciones éticas clave:</p>
 <ul>
-<li>Data Privacy and Security</li>
-<li>Algorithmic Bias</li>
-<li>Transparency and Accountability</li>
-<li>Social Impact</li>
+<li>Privacidad y Seguridad de Datos</li>
+<li>Sesgos Algorítmicos</li>
+<li>Transparencia y Responsabilidad</li>
+<li>Impacto Social</li>
 </ul>
 
-<p>Developing AI systems with strong ethical principles is crucial for building trust and ensuring positive societal impact.</p>''',
-                'summary': 'Understanding the importance of ethical considerations in AI development.',
+<p>Desarrollar sistemas de IA con principios éticos sólidos es crucial para construir confianza y asegurar un impacto social positivo.</p>''',
+                'summary': 'Comprendiendo la importancia de las consideraciones éticas en el desarrollo de IA.',
                 'author': 'Emma Thompson'
             }
         ]
@@ -88,7 +113,7 @@ def blog():
         posts = Blog.query.order_by(Blog.created_at.desc()).all()
         return render_template('blog.html', posts=posts)
     except Exception as e:
-        app.logger.error(f"Error fetching blog posts: {str(e)}")
+        app.logger.error(f"Error al obtener posts del blog: {str(e)}")
         return render_template('blog.html', posts=[])
 
 @app.route('/blog/<int:post_id>')
@@ -97,23 +122,22 @@ def blog_post(post_id):
         post = Blog.query.get_or_404(post_id)
         return render_template('blog_post.html', post=post)
     except Exception as e:
-        app.logger.error(f"Error fetching blog post {post_id}: {str(e)}")
-        return render_template('error.html', message="Blog post not found"), 404
+        app.logger.error(f"Error al obtener el post {post_id}: {str(e)}")
+        return render_template('error.html', message="Post del blog no encontrado"), 404
 
 @app.route('/submit_contact', methods=['POST'])
 def submit_contact():
     try:
         data = request.form
-        contact = Contact(
-            name=data['name'],
-            email=data['email'],
-            message=data['message']
-        )
+        contact = Contact()
+        contact.name = data['name']
+        contact.email = data['email']
+        contact.message = data['message']
         db.session.add(contact)
         db.session.commit()
         return jsonify({"status": "success"})
     except Exception as e:
-        app.logger.error(f"Error submitting contact form: {str(e)}")
+        app.logger.error(f"Error al enviar el formulario de contacto: {str(e)}")
         return jsonify({"status": "error", "message": str(e)})
 
 with app.app_context():
