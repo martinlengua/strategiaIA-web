@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="strategIA Logo" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Blog Section -->
+<section class="blog-section">
+    <div class="container">
+        <h1 class="section-title">AI Insights Blog</h1>
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="blog-card">
+                    <div class="blog-content">
+                        <h2>{{ post.title }}</h2>
+                        <p class="blog-meta">By {{ post.author }} | {{ post.created_at.strftime('%B %d, %Y') }}</p>
+                        <p class="blog-summary">{{ post.summary }}</p>
+                        <a href="{{ url_for('blog_post', post_id=post.id) }}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

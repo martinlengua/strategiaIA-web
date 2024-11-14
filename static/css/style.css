@@ -319,3 +319,110 @@ body.dark-mode .footer .social-icons a:hover {
         padding: 20px;
     }
 }
+
+/* Blog Section */
+.blog-section {
+    padding: 120px 0 80px;
+    background-color: transparent;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.blog-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+
+.blog-content {
+    padding: 20px;
+}
+
+.blog-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.blog-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.blog-summary {
+    margin-bottom: 20px;
+}
+
+/* Blog Post Section */
+.blog-post-section {
+    padding: 120px 0 80px;
+}
+
+.blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.blog-post h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.blog-post .blog-meta {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.blog-post .blog-meta span {
+    margin-right: 20px;
+}
+
+.blog-post .blog-content {
+    line-height: 1.8;
+}
+
+/* Dark mode styles for blog */
+body.dark-mode .blog-card,
+body.dark-mode .blog-post {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+body.dark-mode .blog-meta {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Navigation */
+.navbar .nav-item {
+    margin-right: 1.5rem;
+}
+
+.navbar .nav-item:last-child {
+    margin-right: 0;
+}
+
+.navbar .nav-link {
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: var(--primary-color);
+}
+
+.navbar .nav-link.active {
+    color: var(--primary-color);
+}
