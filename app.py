@@ -10,7 +10,7 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "strategia-secret-key"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///strategia.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
@@ -84,13 +84,21 @@ def index():
 
 @app.route('/blog')
 def blog():
-    posts = Blog.query.order_by(Blog.created_at.desc()).all()
-    return render_template('blog.html', posts=posts)
+    try:
+        posts = Blog.query.order_by(Blog.created_at.desc()).all()
+        return render_template('blog.html', posts=posts)
+    except Exception as e:
+        app.logger.error(f"Error fetching blog posts: {str(e)}")
+        return render_template('blog.html', posts=[])
 
 @app.route('/blog/<int:post_id>')
 def blog_post(post_id):
-    post = Blog.query.get_or_404(post_id)
-    return render_template('blog_post.html', post=post)
+    try:
+        post = Blog.query.get_or_404(post_id)
+        return render_template('blog_post.html', post=post)
+    except Exception as e:
+        app.logger.error(f"Error fetching blog post {post_id}: {str(e)}")
+        return render_template('error.html', message="Blog post not found"), 404
 
 @app.route('/submit_contact', methods=['POST'])
 def submit_contact():
@@ -105,6 +113,7 @@ def submit_contact():
         db.session.commit()
         return jsonify({"status": "success"})
     except Exception as e:
+        app.logger.error(f"Error submitting contact form: {str(e)}")
         return jsonify({"status": "error", "message": str(e)})
 
 with app.app_context():
