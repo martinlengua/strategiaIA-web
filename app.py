@@ -1,9 +1,11 @@
 import os
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, emit
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 import locale
+from chat_utils import get_chatbot_response
 
 class Base(DeclarativeBase):
     pass
@@ -14,9 +16,10 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "strategia-secret-key"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+socketio = SocketIO(app)
 db.init_app(app)
 
-from models import Contact, Blog
+from models import Contact, Blog, ChatMessage
 
 # Spanish month names
 SPANISH_MONTHS = {
@@ -41,6 +44,27 @@ def spanish_date_filter(date):
         if eng in eng_date:
             return eng_date.replace(eng, esp)
     return eng_date
+
+@socketio.on('send_message')
+def handle_message(data):
+    user_message = data['message']
+    
+    # Get response from OpenAI
+    bot_response = get_chatbot_response(user_message)
+    
+    # Save to database
+    chat_message = ChatMessage(
+        user_message=user_message,
+        bot_response=bot_response
+    )
+    db.session.add(chat_message)
+    db.session.commit()
+    
+    # Emit response back to client
+    emit('receive_message', {
+        'response': bot_response,
+        'timestamp': datetime.now().strftime('%H:%M')
+    })
 
 def init_sample_blog_posts():
     # Check if we already have blog posts
@@ -140,6 +164,8 @@ def submit_contact():
         app.logger.error(f"Error al enviar el formulario de contacto: {str(e)}")
         return jsonify({"status": "error", "message": str(e)})
 
-with app.app_context():
-    db.create_all()
-    init_sample_blog_posts()
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+        init_sample_blog_posts()
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
