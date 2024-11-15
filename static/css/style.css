@@ -36,6 +36,7 @@ body.dark-mode .hero-section {
 body.dark-mode .services-section,
 body.dark-mode .about-section,
 body.dark-mode .contact-section {
+    text-align: center;
     background-color: #000;
 }
 
@@ -100,14 +101,33 @@ body.dark-mode .footer .social-icons a:hover {
 
 /* Hero Section */
 .hero-section {
-    padding: 120px 0 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    transition: background 0.5s ease, background-color 0.5s ease;
-    background-color: transparent;
+    text-align: justify;
+    padding: 0; /* Remove any extra padding */
+    margin: 0; /* Ensure no default margins */
 }
+
+.container {
+    max-width: 4000px; /* Adjust if needed */
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Add space between columns */
+}
+
 
 .hero-section .display-4 {
     margin-bottom: 1.5rem;
+    justify-content: center;
     color: var(--primary-color);
     transition: color 0.5s ease;
 }

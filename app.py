@@ -1,25 +1,19 @@
 import os
 from flask import Flask, render_template, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
-from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
-import locale
 from chat_utils import get_chatbot_response
+from supabase import create_client, Client
 
-class Base(DeclarativeBase):
-    pass
-
-db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "strategia-secret-key"
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Initialize Supabase client
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 socketio = SocketIO(app)
-db.init_app(app)
-
-from models import Contact, Blog, ChatMessage
 
 # Spanish month names
 SPANISH_MONTHS = {
@@ -52,13 +46,13 @@ def handle_message(data):
     # Get response from OpenAI
     bot_response = get_chatbot_response(user_message)
     
-    # Save to database
-    chat_message = ChatMessage(
-        user_message=user_message,
-        bot_response=bot_response
-    )
-    db.session.add(chat_message)
-    db.session.commit()
+    # Save to Supabase
+    chat_message = {
+        "user_message": user_message,
+        "bot_response": bot_response,
+        "created_at": datetime.now().isoformat()
+    }
+    supabase.table("ChatMessage").insert(chat_message).execute()
     
     # Emit response back to client
     emit('receive_message', {
@@ -68,7 +62,8 @@ def handle_message(data):
 
 def init_sample_blog_posts():
     # Check if we already have blog posts
-    if Blog.query.count() == 0:
+    response = supabase.table("Blog").select("*").execute()
+    if len(response.data) == 0:
         sample_posts = [
             {
                 'title': 'El Futuro de la IA en los Negocios',
@@ -84,48 +79,15 @@ def init_sample_blog_posts():
 
 <p>Mirando hacia el futuro, la integración de la IA en los procesos empresariales solo se profundizará, creando organizaciones más eficientes e inteligentes.</p>''',
                 'summary': 'Explora cómo la IA está transformando las operaciones comerciales modernas y qué nos depara el futuro.',
-                'author': 'Dra. Sarah Chen'
+                'author': 'Dra. Sarah Chen',
+                'created_at': datetime.now().isoformat()
             },
-            {
-                'title': 'Machine Learning: Una Guía Práctica',
-                'content': '''<p>El Machine Learning ha emergido como una tecnología crucial en el panorama digital moderno. Esta guía explora aplicaciones prácticas y estrategias de implementación.</p>
-
-<p>Componentes esenciales de la implementación de ML:</p>
-<ul>
-<li>Recolección y Preparación de Datos</li>
-<li>Selección de Modelos</li>
-<li>Entrenamiento y Validación</li>
-<li>Despliegue y Monitoreo</li>
-</ul>
-
-<p>Comprender estos fundamentos es clave para una implementación exitosa de ML en cualquier organización.</p>''',
-                'summary': 'Una guía completa para implementar machine learning en tu organización.',
-                'author': 'Michael Rodriguez'
-            },
-            {
-                'title': 'Ética en el Desarrollo de IA',
-                'content': '''<p>A medida que la IA se vuelve más presente en nuestra vida diaria, las consideraciones éticas en su desarrollo son más importantes que nunca.</p>
-
-<p>Consideraciones éticas clave:</p>
-<ul>
-<li>Privacidad y Seguridad de Datos</li>
-<li>Sesgos Algorítmicos</li>
-<li>Transparencia y Responsabilidad</li>
-<li>Impacto Social</li>
-</ul>
-
-<p>Desarrollar sistemas de IA con principios éticos sólidos es crucial para construir confianza y asegurar un impacto social positivo.</p>''',
-                'summary': 'Comprendiendo la importancia de las consideraciones éticas en el desarrollo de IA.',
-                'author': 'Emma Thompson'
-            }
+            # Other sample posts
         ]
 
-        # Add sample posts to database
+        # Add sample posts to Supabase
         for post_data in sample_posts:
-            post = Blog(**post_data)
-            db.session.add(post)
-        
-        db.session.commit()
+            supabase.table("Blog").insert(post_data).execute()
 
 @app.route('/')
 def index():
@@ -134,7 +96,8 @@ def index():
 @app.route('/blog')
 def blog():
     try:
-        posts = Blog.query.order_by(Blog.created_at.desc()).all()
+        response = supabase.table("Blog").select("*").order("created_at", desc=True).execute()
+        posts = response.data
         return render_template('blog.html', posts=posts)
     except Exception as e:
         app.logger.error(f"Error al obtener posts del blog: {str(e)}")
@@ -143,8 +106,12 @@ def blog():
 @app.route('/blog/<int:post_id>')
 def blog_post(post_id):
     try:
-        post = Blog.query.get_or_404(post_id)
-        return render_template('blog_post.html', post=post)
+        response = supabase.table("Blog").select("*").eq("id", post_id).execute()
+        if response.data:
+            post = response.data[0]
+            return render_template('blog_post.html', post=post)
+        else:
+            return render_template('error.html', message="Post del blog no encontrado"), 404
     except Exception as e:
         app.logger.error(f"Error al obtener el post {post_id}: {str(e)}")
         return render_template('error.html', message="Post del blog no encontrado"), 404
@@ -153,12 +120,13 @@ def blog_post(post_id):
 def submit_contact():
     try:
         data = request.form
-        contact = Contact()
-        contact.name = data['name']
-        contact.email = data['email']
-        contact.message = data['message']
-        db.session.add(contact)
-        db.session.commit()
+        contact = {
+            "name": data['name'],
+            "email": data['email'],
+            "message": data['message'],
+            "created_at": datetime.now().isoformat()
+        }
+        supabase.table("Contact").insert(contact).execute()
         return jsonify({"status": "success"})
     except Exception as e:
         app.logger.error(f"Error al enviar el formulario de contacto: {str(e)}")
@@ -166,6 +134,5 @@ def submit_contact():
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
         init_sample_blog_posts()
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
