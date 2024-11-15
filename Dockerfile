@@ -17,4 +17,5 @@ RUN pip install -r requirements.txt
 EXPOSE 3000
 
 # Run the application
-CMD ["python", "main.py"]
+#CMD ["python", "main.py"]
+CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:3000", "main:app"]
