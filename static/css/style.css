@@ -413,6 +413,87 @@ body.dark-mode .footer .social-icons a:hover {
     line-height: 1.8;
 }
 
+/* Citas Page Styles */
+.citas-hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 150px 0 100px;
+}
+.citas-hero .display-4,
+.citas-hero .lead {
+    color: white;
+}
+.intro-section,
+.features-section,
+.benefits-section,
+.use-cases-section,
+.demo-section,
+.cta-section {
+    padding: 80px 0;
+    background-color: transparent;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+.feature-card,
+.benefit-card,
+.use-case-card {
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    background: var(--light-bg);
+    transition: transform 0.3s ease, background-color 0.5s ease;
+    height: 100%;
+}
+.feature-card:hover,
+.benefit-card:hover,
+.use-case-card:hover {
+    transform: translateY(-5px);
+}
+.feature-card i,
+.benefit-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+.demo-container {
+    padding: 50px;
+    border-radius: 10px;
+    background: var(--light-bg);
+    transition: background-color 0.5s ease;
+}
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 100px 0;
+}
+.cta-section h2,
+.cta-section .lead {
+    color: white;
+}
+/* Dark mode styles for citas page */
+body.dark-mode .feature-card,
+body.dark-mode .benefit-card,
+body.dark-mode .use-case-card,
+body.dark-mode .demo-container {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+/* Responsive design for citas page */
+@media (max-width: 768px) {
+    .citas-hero {
+        padding: 120px 0 80px;
+    }
+    
+    .feature-card,
+    .benefit-card,
+    .use-case-card {
+        margin-bottom: 20px;
+    }
+    
+    .demo-container {
+        padding: 30px;
+    }
+}
+
 /* Dark mode styles for blog */
 body.dark-mode .blog-card,
 body.dark-mode .blog-post {
