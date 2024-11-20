@@ -131,6 +131,10 @@ def submit_contact():
         app.logger.error(f"Error al enviar el formulario de contacto: {str(e)}")
         return jsonify({"status": "error", "message": str(e)})
 
+@app.route('/servicios/citas')
+def citas():
+    return render_template('citas.html')
+
 if __name__ == '__main__':
     with app.app_context():
         init_sample_blog_posts()
