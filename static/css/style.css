@@ -415,13 +415,13 @@ body.dark-mode .footer .social-icons a:hover {
 
 /* Citas Page Styles */
 .citas-hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
+    background: white /* linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); */
+    color: black;
     padding: 150px 0 100px;
 }
 .citas-hero .display-4,
 .citas-hero .lead {
-    color: white;
+    color: black;
 }
 .intro-section,
 .features-section,
