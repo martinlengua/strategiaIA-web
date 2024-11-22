@@ -421,7 +421,7 @@ body.dark-mode .footer .social-icons a:hover {
 }
 .citas-hero .display-4,
 .citas-hero .lead {
-    color: black;
+    color: var(--primary-color);
 }
 .intro-section,
 .features-section,
