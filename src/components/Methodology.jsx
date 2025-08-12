@@ -76,10 +76,10 @@ export default function Methodology() {
           <Step
             title="Autonomía"
             desc="Transferimos el control a tu equipo para que escale y gestione la IA sin depender de terceros."
-            color="bg-purple-50 text-purple-700 border-purple-200"
+            color="bg-yellow-50 text-yellow-700 border-yellow-200"
             dark={dark}
             icon={
-              <svg className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <svg className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 12h18M3 17h18" />
               </svg>
             }
