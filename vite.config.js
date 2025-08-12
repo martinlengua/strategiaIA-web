@@ -9,6 +9,6 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     hmr: false,
-    allowedHosts: ['.e2b.app', 'localhost', '127.0.0.1']
+    allowedHosts: ['strategiaperutech.com', 'localhost', '127.0.0.1']
   }
 })
