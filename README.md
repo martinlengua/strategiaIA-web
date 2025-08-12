@@ -1,1 +1,0 @@
-# strategiaIA-web
