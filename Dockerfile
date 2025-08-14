@@ -1,21 +1,27 @@
-# Use an official Python runtime as a parent image
-FROM python:3.12-slim
+# Imagen base de Node.js
+FROM node:20-alpine
 
-# Instala las dependencias necesarias para pygame
-RUN apt-get update && apt-get install -y libasound2 libsdl2-mixer-2.0-0 libglib2.0-0 pulseaudio alsa-utils && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory in the container
+# Directorio de trabajo
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copiar package.json y package-lock.json primero
+COPY package*.json ./
 
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+# Instalar dependencias
+RUN npm install
 
-# Expose the port that Flask will run on
-EXPOSE 3000
+# Copiar el resto de archivos
+COPY . .
 
-# Run the application
-#CMD ["python", "main.py"]
-CMD ["python", "main.py"]
+# Construir la app para producción
+RUN npm run build
+
+# Variables de entorno para vite preview
+ENV HOST=0.0.0.0
+ENV PORT=4173
+
+# Exponer el puerto que usa vite preview
+EXPOSE 4173
+
+# Comando para servir la app construida
+CMD ["npm", "run", "preview"]
