@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
+import { useScroll } from "../contexts/ScrollContext.jsx";
 
 export default function Hero() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setDark(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { isDarkMode } = useScroll();
 
   return (
     <section id="top" className="w-full pt-28 sm:pt-32 bg-transparent">
@@ -18,10 +12,10 @@ export default function Hero() {
               <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
               IA Empresarial en LATAM
             </div>
-            <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight transition-colors duration-700 ${dark ? "text-white" : "text-gray-900"}`}>
+            <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>
               Convertimos tu empresa en una organización AI Powered
             </h1>
-            <p className={`mt-5 text-lg sm:text-xl leading-relaxed transition-colors duration-700 ${dark ? "text-gray-200" : "text-gray-700"}`}>
+            <p className={`mt-5 text-lg sm:text-xl leading-relaxed transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
               De cuellos de botella a operaciones inteligentes y autónomas. Implementamos inteligencia artificial en el corazón de tu negocio para optimizar procesos, eliminar tareas repetitivas y escalar resultados, asegurando independencia tecnológica en pocos meses.
 
             </p>
@@ -36,7 +30,7 @@ export default function Hero() {
               </a>
               <a
                 href="#servicios"
-                className={`inline-flex items-center justify-center px-6 py-3 rounded-xl bg-transparent font-semibold border border-gray-300 hover:border-gray-400 hover:bg-gray-100 transition-all transition-colors duration-700 ${dark ? "text-white border-gray-500" : "text-gray-900"}`}
+                className={`inline-flex items-center justify-center px-6 py-3 rounded-xl bg-transparent font-semibold border border-gray-300 hover:border-gray-400 hover:bg-gray-100 transition-all transition-colors duration-700 ${isDarkMode ? "text-white border-gray-500" : "text-gray-900"}`}
               >
                 Ver Servicios
               </a>
@@ -66,12 +60,12 @@ export default function Hero() {
   );
 }
 
-function FeatureStat({ label, value, sub, dark }) {
+function FeatureStat({ label, value, sub, isDarkMode }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-transparent p-4 shadow-sm hover:shadow-md transition-shadow">
-      <div className={`text-sm transition-colors duration-700 ${dark ? "text-gray-300" : "text-gray-600"}`}>{label}</div>
-      <div className={`text-2xl font-bold transition-colors duration-700 ${dark ? "text-white" : "text-gray-900"}`}>{value}</div>
-      <div className={`text-xs transition-colors duration-700 ${dark ? "text-gray-400" : "text-gray-500"}`}>{sub}</div>
+      <div className={`text-sm transition-colors duration-700 ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>{label}</div>
+      <div className={`text-2xl font-bold transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>{value}</div>
+      <div className={`text-xs transition-colors duration-700 ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{sub}</div>
     </div>
   );
 }

@@ -1,88 +1,85 @@
-import { useState, useEffect } from "react";
+import { useScroll } from "../contexts/ScrollContext.jsx";
 
-export default function Header() {
-  const [open, setOpen] = useState(false);
-  const [elevated, setElevated] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setElevated(window.scrollY > 8);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Detecta si el fondo principal es oscuro
-  const isDark = typeof window !== "undefined" && window.scrollY > 50;
+export default function Features() {
+  const { isDarkMode } = useScroll();
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors ${
-        elevated
-          ? isDark
-            ? "bg-black/90 backdrop-blur border-b border-gray-700"
-            : "bg-white/90 backdrop-blur border-b border-gray-200"
-          : isDark
-          ? "bg-black"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-        <div className="flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2 group">
-            <img
-              src="/images/logostrategia.png"
-              alt="Strategia Perú logo"
-              className="h-8 w-8 rounded-md shadow-sm"
-            />
-            <span className="font-semibold text-lg tracking-tight group-hover:text-blue-600 transition-colors">Strategia Perú</span>
-          </a>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#metodologia" className="text-gray-700 hover:text-blue-600 transition-colors">Metodología</a>
-            <a href="#pilares" className="text-gray-700 hover:text-blue-600 transition-colors">Pilares</a>
-            <a href="#servicios" className="text-gray-700 hover:text-blue-600 transition-colors">Servicios</a>
-            <a
-              href="https://cal.com/strategiaperu/interview"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
-            >
-              Agendar Llamada
-            </a>
-          </nav>
-
-          <button
-            aria-label="Abrir menú"
-            onClick={() => setOpen((v) => !v)}
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-md border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors"
-          >
-            <svg className={`h-6 w-6 text-gray-900 transition-transform ${open ? "rotate-90" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {open ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M3 12h18M3 18h18" />
-              )}
-            </svg>
-          </button>
+    <section className="w-full py-16 sm:py-20 bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-blue-600">Nuestros Pilares</p>
+          <h2 className={`mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+            Transformación AI Integral
+          </h2>
+          <p className={`mt-4 text-lg transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
+            Nuestro enfoque se basa en cuatro pilares fundamentales que garantizan una implementación exitosa de IA en tu organización.
+          </p>
         </div>
 
-        {open && (
-          <div className="md:hidden mt-3 pb-3 border-t border-gray-200">
-            <div className="flex flex-col gap-2 pt-3">
-              <a onClick={() => setOpen(false)} href="#metodologia" className="px-2 py-2 rounded-md hover:bg-gray-50 transition-colors">Metodología</a>
-              <a onClick={() => setOpen(false)} href="#pilares" className="px-2 py-2 rounded-md hover:bg-gray-50 transition-colors">Pilares</a>
-              <a onClick={() => setOpen(false)} href="#servicios" className="px-2 py-2 rounded-md hover:bg-gray-50 transition-colors">Servicios</a>
-              <a
-                href="https://cal.com/strategiaperu/interview"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 shadow-md transition-colors"
-              >
-                Agendar Llamada
-              </a>
-            </div>
-          </div>
-        )}
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <FeaturePillar
+            title="Estrategia"
+            description="Análisis profundo de procesos actuales y diseño de roadmap personalizado para maximizar el ROI."
+            icon={
+              <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            }
+            isDarkMode={isDarkMode}
+          />
+          
+          <FeaturePillar
+            title="Implementación"
+            description="Desarrollo e integración de soluciones de IA personalizadas que se adaptan a tu infraestructura."
+            icon={
+              <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            }
+            isDarkMode={isDarkMode}
+          />
+          
+          <FeaturePillar
+            title="Capacitación"
+            description="Formación integral de equipos para crear una cultura AI-First en toda la organización."
+            icon={
+              <svg className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            }
+            isDarkMode={isDarkMode}
+          />
+          
+          <FeaturePillar
+            title="Autonomía"
+            description="Transferencia de conocimiento para lograr independencia tecnológica y escalabilidad sostenible."
+            icon={
+              <svg className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            }
+            isDarkMode={isDarkMode}
+          />
+        </div>
       </div>
-    </header>
+    </section>
+  );
+}
+
+function FeaturePillar({ title, description, icon, isDarkMode }) {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-transparent p-6 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center">
+          {icon}
+        </div>
+        <h3 className={`text-xl font-semibold transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+          {title}
+        </h3>
+      </div>
+      <p className={`flex-1 transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
+        {description}
+      </p>
+    </div>
   );
 }

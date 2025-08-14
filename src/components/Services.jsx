@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
+import { useScroll } from "../contexts/ScrollContext.jsx";
 
 export default function Services() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setDark(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { isDarkMode } = useScroll();
 
   return (
     <section className="w-full py-16 sm:py-20 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-blue-600">Nuestros Servicios</p>
-          <h2 className={`mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors duration-700 ${dark ? "text-white" : "text-gray-900"}`}>Consultoría Integral de IA</h2>
-          <p className={`mt-4 text-lg transition-colors duration-700 ${dark ? "text-gray-200" : "text-gray-700"}`}>
+          <h2 className={`mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>Consultoría Integral de IA</h2>
+          <p className={`mt-4 text-lg transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
             No vendemos chatbots genéricos. Analizamos tu empresa, identificamos oportunidades reales de IA, capacitamos equipos internos y desarrollamos infraestructura de agentes personalizada.
           </p>
         </header>
@@ -39,7 +33,7 @@ export default function Services() {
                 "Servicio al cliente automatizado 24/7",
               ]}
               color="blue"
-              dark={dark}
+              dark={isDarkMode}
             />
 
             <ServiceBlock
@@ -47,7 +41,7 @@ export default function Services() {
               desc="Desarrollamos e integramos agentes y flujos de IA a tu stack actual, garantizando que se adapten a tus procesos clave y generen valor desde el día uno."
               items={[]}
               color="purple"
-              dark={dark}
+              dark={isDarkMode}
             />
 
             <ServiceBlock
@@ -55,7 +49,7 @@ export default function Services() {
               desc="Eliminamos tareas repetitivas y optimizamos flujos críticos como atención al cliente, gestión documental, control de calidad y más, con integración directa a tus sistemas."
               items={[]}
               color="emerald"
-              dark={dark}
+              dark={isDarkMode}
             />
 
             <ServiceBlock
@@ -63,7 +57,7 @@ export default function Services() {
               desc="Entrenamos a líderes, mandos medios y equipos operativos para operar con IA. Creamos cultura AI-First con políticas, mejores prácticas y champions internos."
               items={[]}
               color="silver"
-              dark={dark}
+              dark={isDarkMode}
             />
 
             <ServiceBlock
@@ -71,7 +65,7 @@ export default function Services() {
               desc="Medimos el rendimiento de las soluciones de IA, optimizamos modelos y ajustamos procesos para mantener y mejorar resultados con el tiempo."
               items={[]}
               color="green"
-              dark={dark}
+              dark={isDarkMode}
             />
 
             <ServiceBlock
@@ -79,21 +73,21 @@ export default function Services() {
               desc="Acompañamos a tu empresa hasta lograr independencia tecnológica total, con mentoría directa y soporte especializado en cada etapa."
               items={[]}
               color="yellow"
-              dark={dark}
+              dark={isDarkMode}
             />
           </div>
 
           <div className="space-y-6">
             <div className={`rounded-2xl border border-gray-200 bg-transparent p-6 shadow-sm`}>
-              <h3 className={`text-xl font-semibold transition-colors duration-700 ${dark ? "text-white" : "text-gray-900"}`}>Desarrollo Personalizado</h3>
-              <p className={`mt-2 transition-colors duration-700 ${dark ? "text-gray-200" : "text-gray-700"}`}>
+              <h3 className={`text-xl font-semibold transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>Desarrollo Personalizado</h3>
+              <p className={`mt-2 transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
                 Infraestructura de Inteligencia Artificial de alto rendimiento, On-Premise o en la nube, respaldada por Microsoft y Google. Mejora continua garantizada mediante observabilidad avanzada con Prometheus.
               </p>
 
               <div className="mt-4 rounded-xl bg-transparent border border-gray-200 overflow-hidden">
                 <div className={`px-4 py-3 border-b border-gray-200 flex items-center gap-2`}>
                   <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                  <span className={`text-sm font-medium transition-colors duration-700 ${dark ? "text-gray-200" : "text-gray-700"}`}>Ejemplo</span>
+                  <span className={`text-sm font-medium transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>Ejemplo</span>
                 </div>
                 <div className="p-4 space-y-4">
                   <ChatMessage
@@ -101,42 +95,42 @@ export default function Services() {
                     name="Agente de IA"
                     text="te gustaría agendar una llamada para discutir cómo podemos ayudarte a implementar IA en tu empresa?"
                     align="left"
-                    dark={dark}
+                    dark={isDarkMode}
                   />
                   <ChatMessage
                     avatar="/images/person.png"
                     name="Thiago Severino"
                     text="Sí, me interesa mucho. ¿Cómo funciona el proceso? @Larry Maravi, qué te parece?"
                     align="right"
-                    dark={dark}
+                    dark={isDarkMode}
                   />
                   <ChatMessage
                     avatar="/images/bot.png"
                     name="Agente de IA"
                     text="Se los explico el día de mañana a las 9am. ¿Te parece bien?"
                     align="left"
-                    dark={dark}
+                    dark={isDarkMode}
                   />
                   <ChatMessage
                     avatar="/images/person.png"
                     name="Larry Maravi"
                     text="Cerrado! Por fa... agrega a todo el directorio para que estén enterados..."
                     align="right"
-                    dark={dark}
+                    dark={isDarkMode}
                   />
                   <ChatMessage
                     avatar="/images/bot.png"
                     name="Agente de IA"
                     text="Vale, yo me encargo de enviar un resumen a todos los interesados. ¿Algo más que quieras agregar?"
                     align="left"
-                    dark={dark}
+                    dark={isDarkMode}
                   />
                   <ChatMessage
                     avatar="/images/bot.png"
                     name="Larry Maravi"
                     text="Perfecto, gracias!"
                     align="right"
-                    dark={dark}
+                    dark={isDarkMode}
                   />                  
                 </div>
               </div>
@@ -169,12 +163,12 @@ function ServiceBlock({ title, desc, items, color, dark }) {
           </svg>
         </div>
         <div>
-          <h3 className={`text-xl font-semibold transition-colors duration-700 ${dark ? "text-white" : "text-gray-900"}`}>{title}</h3>
-          <p className={`mt-2 transition-colors duration-700 ${dark ? "text-gray-200" : "text-gray-700"}`}>{desc}</p>
+          <h3 className={`text-xl font-semibold transition-colors duration-700 ${isDarkMode ? "text-white" : "text-gray-900"}`}>{title}</h3>
+          <p className={`mt-2 transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>{desc}</p>
           {items && items.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
               {items.map((it) => (
-                <span key={it} className={`px-3 py-1 rounded-full border border-gray-200 bg-transparent text-sm transition-colors duration-700 ${dark ? "text-gray-200" : "text-gray-700"}`}>
+                <span key={it} className={`px-3 py-1 rounded-full border border-gray-200 bg-transparent text-sm transition-colors duration-700 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
                   {it}
                 </span>
               ))}
@@ -192,7 +186,7 @@ function ChatMessage({ avatar, name, text, align = "left", dark }) {
     <div className={`flex items-start gap-3 ${isRight ? "flex-row-reverse text-right" : ""}`}>
       <img src={avatar} alt={`${name} avatar`} className="h-8 w-8 rounded-full border border-gray-200 shadow-sm" />
       <div className={`max-w-[80%] ${isRight ? "items-end" : ""} flex flex-col`}>
-        <span className={`text-xs font-medium transition-colors duration-700 ${dark ? "text-gray-400" : "text-gray-500"}`}>{name}</span>
+        <span className={`text-xs font-medium transition-colors duration-700 ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{name}</span>
         <div
           className={`mt-1 inline-block rounded-2xl px-4 py-2 shadow-sm border transition-colors duration-700 ${
             isRight
